@@ -18,5 +18,4 @@ public class LanguageMapper {
                 .created_at(language.getCreated_at())
                 .build();
     }
-
 }
