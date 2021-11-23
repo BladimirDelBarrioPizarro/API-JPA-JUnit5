@@ -1,5 +1,7 @@
 package com.example.demo.model.entity;
 
+import com.example.demo.model.entity.dummy.AccountDummy;
+import com.example.demo.model.exceptions.HandleExceptionDevit;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -10,7 +12,7 @@ class AccountTest {
 
     @Test
     void testNameAccount() {
-        Account account = new Account("Bladimir", new BigDecimal("1000.434"));
+        Account account = AccountDummy.accountDummy1();
         String expected = "Bladimir";
         String reality = account.getPerson();
         assertEquals(expected,reality);
@@ -19,7 +21,7 @@ class AccountTest {
 
     @Test
     void testBalanceAccount() {
-        Account account =  new Account("Bladimir", new BigDecimal("1000.434"));
+        Account account = AccountDummy.accountDummy1();
         assertEquals(1000.434,account.getBalance().doubleValue());
         assertFalse(account.getBalance().compareTo(BigDecimal.ZERO) < 0);
         assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) > 0);
@@ -27,15 +29,15 @@ class AccountTest {
 
     @Test
     void testReferenceAccount() {
-        Account account1 =  new Account("Bladimir", new BigDecimal("1000.434"));
-        Account account2 =  new Account("Bladimir", new BigDecimal("1000.434"));
+        Account account1 =  AccountDummy.accountDummy1();
+        Account account2 =  AccountDummy.accountDummy1();
         assertEquals(account1,account2);
         // assertNotEquals(account1,account2);
     }
 
     @Test
     void testSetSumDebitAccount() {
-        Account account1 =  new Account("Bladimir", new BigDecimal("1.100"));
+        Account account1 =  AccountDummy.accountDummy2();
         account1.setSumDevit(new BigDecimal("1.100"));
         assertNotNull(account1.getBalance());
         assertEquals("2.200",account1.getBalance().toString());
@@ -44,10 +46,21 @@ class AccountTest {
 
     @Test
     void testSubstractDevitAccount() {
-        Account account1 =  new Account("Bladimir", new BigDecimal("1.100"));
+        Account account1 =  AccountDummy.accountDummy2();
         account1.setSubstractDevit(new BigDecimal("1.100"));
         assertNotNull(account1.getBalance());
         assertEquals("0.000",account1.getBalance().toPlainString());
         assertEquals(0.0,account1.getBalance().intValue());
+    }
+
+    @Test
+    void testHandleExceptionDevitAccount() {
+        Account account1 =  AccountDummy.accountDummy2();
+        Exception exception = assertThrows(HandleExceptionDevit.class, () -> {
+           account1.setSubstractDevit(new BigDecimal("2.200"));
+        });
+        String message = exception.getMessage();
+        String expected = "Insufficient Money";
+        assertEquals(message,expected);
     }
 }

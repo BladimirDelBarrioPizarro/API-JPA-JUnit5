@@ -1,5 +1,6 @@
 package com.example.demo.model.entity;
 
+import com.example.demo.model.exceptions.HandleExceptionDevit;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,12 +16,17 @@ import java.util.Objects;
 public class Account {
     public String person;
     public BigDecimal balance;
+    public Bank bank;
 
     public void setSumDevit(BigDecimal amount) {
         this.balance = this.balance.add(amount);
     }
 
     public void setSubstractDevit(BigDecimal amount) {
+        BigDecimal newDebit = this.balance.subtract(amount);
+        if(newDebit.intValue() < 0){
+            throw new HandleExceptionDevit("Insufficient Money");
+        }
         this.balance = this.balance.subtract(amount);
     }
 
