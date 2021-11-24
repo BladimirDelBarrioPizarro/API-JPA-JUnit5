@@ -3,6 +3,8 @@ package com.example.demo.model.entity.dummy;
 import com.example.demo.model.entity.Account;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccountDummy {
 
@@ -14,11 +16,12 @@ public class AccountDummy {
                 .build();
     }
 
+
     public static Account accountDummy2() {
         return  Account.builder()
                 .person("Javier")
                 .balance(new BigDecimal("1.100"))
-                // .bank()
+                .bank(BankDummy.bankDummy1())
                 .build();
     }
 

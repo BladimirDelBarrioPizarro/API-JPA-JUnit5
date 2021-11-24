@@ -19,6 +19,7 @@ public class Bank {
 
     public void addAccount(Account account){
         accountList.add(account);
+        account.setBank(this);
     }
 
     public void transfer(Account origin, Account destiny, BigDecimal devit) {
