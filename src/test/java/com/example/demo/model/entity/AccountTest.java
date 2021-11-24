@@ -13,9 +13,12 @@ class AccountTest {
     @Test
     void testNameAccount() {
         Account account = AccountDummy.accountDummy1();
-        String expected = "Bladimir";
+        String expected = "Bladimi";
         String reality = account.getPerson();
-        assertEquals(expected,reality);
+        // Se crea la instancia del string no es recomendable por el consumo de recursos
+        assertNotNull(account,"The account cannot be null");
+        // Se recomienda usar una lambda
+        assertEquals(expected,reality, () -> "The account name is not what expected: Expected: "+expected);
         assertTrue(account.getPerson().equals(expected));
     }
 

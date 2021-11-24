@@ -28,7 +28,8 @@ class BankTest {
         Account account2 = AccountDummy.accountDummy2();
         bank.addAccount(account1);
         bank.addAccount(account2);
-        assertAll(() -> assertEquals(2,bank.getAccountList().size()),
+        assertAll(() -> assertEquals(2,bank.getAccountList().size(),
+                        () -> "This number of accounts is not expected"),
                   () -> assertEquals("ING",account2.getBank().getName()),
                   () -> assertEquals("Bladimir",bank.getAccountList().get(0).getPerson()),
                   () -> assertEquals("Bladimir",bank.getAccountList().stream()
