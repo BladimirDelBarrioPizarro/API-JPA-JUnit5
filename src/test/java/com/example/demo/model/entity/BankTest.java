@@ -2,6 +2,7 @@ package com.example.demo.model.entity;
 
 import com.example.demo.model.entity.dummy.AccountDummy;
 import com.example.demo.model.entity.dummy.BankDummy;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BankTest {
 
     @Test
+    @DisplayName("Test transfer method Bank")
     void testTransferBank() {
        Account origin = AccountDummy.accountDummy3();
        Account destiny = AccountDummy.accountDummy4();
@@ -22,6 +24,7 @@ class BankTest {
     }
 
     @Test
+    @DisplayName("Test method addAccount Bank")
     void testAddAccountBank() {
         Bank bank = BankDummy.bankDummy1();
         Account account1 = AccountDummy.accountDummy1();
