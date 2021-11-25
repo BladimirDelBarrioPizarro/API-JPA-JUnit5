@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.*;
 import org.springframework.boot.system.SystemProperties;
 
+import java.util.Map;
 import java.util.Properties;
 
 @Slf4j
@@ -68,5 +69,23 @@ public class BootTest {
     @DisabledIfSystemProperty(named = "java.version", matches = "17.*")
     void testDisabledIfSystemProperty() {
         log.info("Does not run if the java version is 17");
+    }
+
+    @Test
+    void testPrintSystemEnvironment() {
+        Map<String, String> getenv  = System.getenv();
+        getenv.entrySet().forEach(System.out::println);
+    }
+
+    @Test
+    @EnabledIfEnvironmentVariable(named = "PROCESSOR_ARCHITECTURE", matches = "AMD64")
+    void testEnvironmentEnableProcessor() {
+        log.info("Run if processor architecture is AMD64");
+    }
+
+    @Test
+    @DisabledIfEnvironmentVariable(named = "PROCESSOR_ARCHITECTURE", matches = "AMD64")
+    void testEnvironmentDisabledProcessor() {
+        log.info("Run if processor architecture is not AMD64");
     }
 }
