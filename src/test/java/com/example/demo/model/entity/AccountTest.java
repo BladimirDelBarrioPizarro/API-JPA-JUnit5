@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
+// @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AccountTest {
     Account account1;
     Account account2;
@@ -18,12 +19,22 @@ class AccountTest {
     void initTest(){
       this.account1 =  AccountDummy.accountDummy1();
       this.account2 = AccountDummy.accountDummy2();
-      log.info("Init test");
+      log.info("Init test -> BeforeEach");
     }
 
     @AfterEach
     void endTest(){
-        log.info("End test");
+        log.info("End test -> AfterEach");
+    }
+
+    @BeforeAll
+    static void beforeAll(){
+        log.info("Init test -> BeforeAll");
+    }
+
+    @AfterAll
+    static void afterAll() {
+        log.info("End test -> AfterAll");
     }
 
     @Test
