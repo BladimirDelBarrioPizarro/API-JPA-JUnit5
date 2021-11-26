@@ -4,6 +4,10 @@ import com.example.demo.model.entity.dummy.AccountDummy;
 import com.example.demo.model.exceptions.HandleExceptionDevit;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
+
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -95,4 +99,24 @@ class AccountTest {
         String expected = "Insufficient Money";
         assertEquals(message,expected);
     }
+
+    @DisplayName("Test example parameterized")
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "first", "second"
+    })
+    void testSimple(String s) {
+        assertFalse(s.isEmpty());
+    }
+
+    // Para testear decimales se recomienda strings ya que es más preciso
+    @ParameterizedTest(name = "Number {index} execute with value {0} - {argumentsWithNames}")
+    @ValueSource(strings = {"0.100","0.900","2.000"})
+    void testExampleParametrized(String mount) {
+        this.account2.setSubstractDevit(new BigDecimal(mount));
+        assertNotNull(account2.getBalance());
+        assertTrue(account2.getBalance().compareTo(BigDecimal.ZERO) > 0);
+    }
+
+
 }
