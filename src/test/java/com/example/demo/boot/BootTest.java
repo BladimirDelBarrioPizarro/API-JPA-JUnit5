@@ -1,9 +1,7 @@
 package com.example.demo.boot;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.*;
 import java.util.Map;
 import java.util.Properties;
@@ -133,5 +131,14 @@ public class BootTest {
         assumingThat(isDev, () -> {
             log.info("Execute if the assumptions condition is met");
         });
+    }
+
+    @RepeatedTest(value = 3,name = "{displayName} -> Repetition number {currentRepetition} of {totalRepetitions}")
+    @DisplayName("Example tag RepeatedTest")
+    void testRepeated(RepetitionInfo info) {
+        if (info.getCurrentRepetition() == 2) {
+            log.info("Run this snippet on repeat two");
+        }
+        log.info("This test has to be repeated three times");
     }
 }
