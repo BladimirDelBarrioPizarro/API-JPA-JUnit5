@@ -5,10 +5,16 @@ import com.example.demo.model.exceptions.HandleExceptionDevit;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,6 +44,79 @@ class AccountTest {
     @AfterAll
     static void afterAll() {
         log.info("End test -> AfterAll");
+    }
+
+
+    @Nested
+    @DisplayName("Example test Parametrized")
+    class Parametrized {
+        Account account1;
+        Account account2;
+
+        @BeforeEach
+        void initTest(){
+            this.account1 =  AccountDummy.accountDummy1();
+            this.account2 = AccountDummy.accountDummy2();
+            log.info("Init test -> BeforeEach");
+        }
+
+        @DisplayName("Basic Test example parameterized")
+        @ParameterizedTest
+        @ValueSource(strings = {
+                "first", "second"
+        })
+        void testSimple(String s) {
+            assertFalse(s.isEmpty());
+        }
+
+        // Para testear decimales se recomienda strings ya que es más preciso
+        @ParameterizedTest(name = "Number {index} execute with value {0} - {argumentsWithNames}")
+        @ValueSource(strings = {"0.100","0.900","2.000"})
+        void testExampleParametrized(String mount) {
+            this.account2.setSubstractDevit(new BigDecimal(mount));
+            assertNotNull(account2.getBalance());
+            assertTrue(account2.getBalance().compareTo(BigDecimal.ZERO) > 0);
+        }
+
+        @ParameterizedTest(name = "Number {index} execute with value {0} - {argumentsWithNames}")
+        @CsvSource({"1,0.100","2,0.900","3,2.000"}) // Adjuntamos el indice seguido de una coma y el valor
+        void testExampleParametrizedCsv(String index, String mount) {
+            log.info(index + "-> "+mount);
+            this.account2.setSubstractDevit(new BigDecimal(mount));
+            assertNotNull(account2.getBalance());
+            assertTrue(account2.getBalance().compareTo(BigDecimal.ZERO) > 0);
+        }
+
+        @ParameterizedTest(name = "Number {index} execute with value {0} - {argumentsWithNames}")
+        @CsvSource({"200,100,Javier,Frodo","300,200,Javier,Pepe","410,400,Javier,Manolo"}) // Adjuntamos los dos valores
+        void testExampleParametrizedCsv2(String balance, String amount, String expected, String current) {
+            this.account2.setBalance(new BigDecimal(balance));
+            this.account2.setSubstractDevit(new BigDecimal(amount));
+            assertEquals(expected,this.account2.getPerson());
+            assertNotEquals(current,this.account2.getPerson());
+            assertNotNull(account2.getBalance());
+            assertTrue(account2.getBalance().compareTo(BigDecimal.ZERO) > 0);
+        }
+
+        @ParameterizedTest(name = "Number {index} execute with value {0} - {argumentsWithNames}")
+        @CsvFileSource(resources = "/data.csv") // Adjuntamos el indice seguido de una coma y el valor
+        void testExampleParametrizedCsvFile(String mount) {
+            this.account2.setSubstractDevit(new BigDecimal(mount));
+            assertNotNull(account2.getBalance());
+            assertTrue(account2.getBalance().compareTo(BigDecimal.ZERO) > 0);
+        }
+
+        @ParameterizedTest(name = "Number {index} execute with value {0} - {argumentsWithNames}")
+        @MethodSource("mountList") // Adjuntamos el indice seguido de una coma y el valor
+        void testExampleParametrizedMethodSource(String mount) {
+            this.account2.setSubstractDevit(new BigDecimal(mount));
+            assertNotNull(account2.getBalance());
+            assertTrue(account2.getBalance().compareTo(BigDecimal.ZERO) > 0);
+        }
+
+        private static List<String> mountList() {
+            return Arrays.asList("0.100","0.900","2.000");
+        }
     }
 
     @Test
@@ -100,23 +179,8 @@ class AccountTest {
         assertEquals(message,expected);
     }
 
-    @DisplayName("Test example parameterized")
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "first", "second"
-    })
-    void testSimple(String s) {
-        assertFalse(s.isEmpty());
-    }
 
-    // Para testear decimales se recomienda strings ya que es más preciso
-    @ParameterizedTest(name = "Number {index} execute with value {0} - {argumentsWithNames}")
-    @ValueSource(strings = {"0.100","0.900","2.000"})
-    void testExampleParametrized(String mount) {
-        this.account2.setSubstractDevit(new BigDecimal(mount));
-        assertNotNull(account2.getBalance());
-        assertTrue(account2.getBalance().compareTo(BigDecimal.ZERO) > 0);
-    }
+
 
 
 }
