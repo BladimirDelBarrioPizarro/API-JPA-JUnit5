@@ -12,8 +12,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -182,8 +184,28 @@ class AccountTest {
         assertEquals(message,expected);
     }
 
+    @Tag("timeout")
+    @Nested
+    @DisplayName("Example test TimeOut")
+    class TimeOut{
+        @Test
+        @Timeout(7)
+        void testTimeOut() throws InterruptedException {
+            TimeUnit.SECONDS.sleep(6);
+        }
 
+        @Test
+        @Timeout(value = 5000, unit = TimeUnit.MILLISECONDS)
+        void testTimeOut2() throws InterruptedException {
+            TimeUnit.SECONDS.sleep(4);
+        }
 
-
+        @Test
+        void testTimeOut3() {
+            assertTimeout(Duration.ofSeconds(5), () -> {
+                TimeUnit.MILLISECONDS.sleep(4000);
+            });
+        }
+    }
 
 }
