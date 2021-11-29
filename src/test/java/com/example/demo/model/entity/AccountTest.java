@@ -12,7 +12,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,6 +46,7 @@ class AccountTest {
     }
 
 
+    @Tag("parametrized")
     @Nested
     @DisplayName("Example test Parametrized")
     class Parametrized {
@@ -105,20 +105,21 @@ class AccountTest {
             assertNotNull(account2.getBalance());
             assertTrue(account2.getBalance().compareTo(BigDecimal.ZERO) > 0);
         }
-
-        @ParameterizedTest(name = "Number {index} execute with value {0} - {argumentsWithNames}")
-        @MethodSource("mountList") // Adjuntamos el indice seguido de una coma y el valor
-        void testExampleParametrizedMethodSource(String mount) {
-            this.account2.setSubstractDevit(new BigDecimal(mount));
-            assertNotNull(account2.getBalance());
-            assertTrue(account2.getBalance().compareTo(BigDecimal.ZERO) > 0);
-        }
-
-        private static List<String> mountList() {
-            return Arrays.asList("0.100","0.900","2.000");
-        }
     }
 
+    @ParameterizedTest(name = "Number {index} execute with value {0} - {argumentsWithNames}")
+    @MethodSource("mountList") // Adjuntamos el indice seguido de una coma y el valor
+    void testExampleParametrizedMethodSource(String mount) {
+        this.account2.setSubstractDevit(new BigDecimal(mount));
+        assertNotNull(account2.getBalance());
+        assertTrue(account2.getBalance().compareTo(BigDecimal.ZERO) > 0);
+    }
+
+    private static List<String> mountList() {
+        return Arrays.asList("0.100","0.900","2.000");
+    }
+
+    @Tag("account")
     @Test
     @DisplayName("Test name Account")
     void testNameAccount() {
