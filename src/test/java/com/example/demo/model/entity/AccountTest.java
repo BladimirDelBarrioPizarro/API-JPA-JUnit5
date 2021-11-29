@@ -24,10 +24,12 @@ class AccountTest {
     Account account2;
 
     @BeforeEach
-    void initTest(){
+    void initTest(TestInfo testInfo, TestReporter testReporter){
       this.account1 =  AccountDummy.accountDummy1();
       this.account2 = AccountDummy.accountDummy2();
       log.info("Init test -> BeforeEach");
+      log.info("Running: {} with Method: {} with Tag {}",testInfo.getDisplayName(),testInfo.getTestMethod().get().getName(),testInfo.getTags());
+      testReporter.publishEntry("Running :"+testInfo.getDisplayName()+ "with Method :"+testInfo.getTestMethod().get().getName()+"with Tag :"+testInfo.getTags());
     }
 
     @AfterEach
@@ -122,7 +124,7 @@ class AccountTest {
     @Tag("account")
     @Test
     @DisplayName("Test name Account")
-    void testNameAccount() {
+    void testNameAccount(TestInfo testInfo, TestReporter testReporter) {
         String expected = "Bladimir";
         String reality = account1.getPerson();
         // Se crea la instancia del string no es recomendable por el consumo de recursos
