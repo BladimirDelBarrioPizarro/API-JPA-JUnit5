@@ -36,7 +36,7 @@ public class TeacherDummy {
                 .languageList(new ArrayList<>())
                 .password("xxxxxx")
                 .photo("http://test")
-                .email("email@talento.com")
+                .email("example@talento.com")
                 .name("name")
                 .build();
     }
